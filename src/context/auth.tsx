@@ -12,10 +12,13 @@ export const useAuthContext = () => {
   return context;
 };
 
+
 export const AuthProvider = ({ children }: any) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const login = async (username: string, password: string) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "https://pakam-project-backend.vercel.app/v1/login",
@@ -30,6 +33,7 @@ export const AuthProvider = ({ children }: any) => {
         router.push("/assessment");
 
         localStorage.setItem("token", response.data.token);
+        setIsLoading(false);
       }
     } catch (error: any) {
       console.error("Error:", error);
@@ -43,6 +47,7 @@ export const AuthProvider = ({ children }: any) => {
     username: string,
     password: string
   ) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "https://pakam-project-backend.vercel.app/v1/register",
@@ -54,8 +59,9 @@ export const AuthProvider = ({ children }: any) => {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log("Registered successfully");
+        setIsLoading(false);
         router.push("/login");
       }
     } catch (error: any) {
@@ -67,6 +73,7 @@ export const AuthProvider = ({ children }: any) => {
   const contextValue = {
     register,
     login,
+    isLoading,
   };
 
   return (

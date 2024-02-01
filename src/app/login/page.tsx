@@ -3,14 +3,15 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useAuth } from "@/context/auth";
+import { CircleLoader } from "react-spinners";
 
 export default function LogIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [showPassword, setShowPassword] = useState(false)
-  const { login } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const { login, isLoading } = useAuth();
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -120,8 +121,14 @@ export default function LogIn() {
                 <div className="w-full flex justify-center">
                   <div>
                     <div className=" bg-[#005700] opacity-50 hover:opacity-100 hover:cursor-pointer text-white rounded-[12px] py-[14px] flex justify-center items-center mt-12">
-                      <button type="submit" className="text-center w-[420px]">
-                        Log in
+                      <button type="submit" className="text-center w-[420px] ">
+                        {isLoading ? (
+                          <div className="w-full flex justify-center items-center">
+                            <CircleLoader size="20" />
+                          </div>
+                        ) : (
+                          "Log in"
+                        )}
                       </button>
                     </div>
                     <div className="pt-3 text-sm">

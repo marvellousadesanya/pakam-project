@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useAuth } from "@/context/auth";
+import { CircleLoader } from "react-spinners";
 
 export default function Register() {
   const [firstName, setFirstName] = useState("");
@@ -14,7 +15,7 @@ export default function Register() {
   const [usernameError, setUsernameError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const { register } = useAuth();
+  const { register, isLoading } = useAuth();
 
   const validatePassword = (value: string) => {
     if (value.length < 8 || !/[A-Z]/.test(value)) {
@@ -191,7 +192,13 @@ export default function Register() {
                       <button
                         type="submit"
                         className="text-center bg-[#005700] text-white rounded-[12px] py-[14px] hover:cursor-pointer opacity-50 hover:opacity-100 w-[420px]">
-                        Register
+                        {isLoading ? (
+                          <div className="w-full flex justify-center items-center">
+                            <CircleLoader size="20" />
+                          </div>
+                        ) : (
+                          "Register"
+                        )}
                       </button>
                     </div>
                     <div className="pt-3 text-sm">
